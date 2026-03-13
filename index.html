@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>旧世界图书馆 · 尘封的记忆</title>
+  <!-- 不使用现代字体，改用系统衬线模拟复古感 -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #3e2e23; /* 深木色底 */
+      background-image: 
+        linear-gradient(rgba(90, 70, 50, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(90, 70, 50, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+      font-family: 'Georgia', 'Times New Roman', 'Palatino', serif;
+      color: #2c1e12;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    /* 主纸张 */
+    .parchment {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: #f3e9d2;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="0.08"/></svg>');
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 12px solid #6b4f3a;
+      border-image: repeating-linear-gradient(45deg, #8b6f55, #5a3e2b 15px) 30 stretch;
+      padding: 2rem 2.5rem;
+      position: relative;
+    }
+
+    /* 破损边缘装饰 */
+    .parchment::before {
+      content: '';
+      position: absolute;
+      top: -10px; left: -10px; right: -10px; bottom: -10px;
+      border: 2px dashed #aa7c5f;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* 标题风格 */
+    h1, h2, h3 {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: normal;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 2px solid #8b5a2b;
+      padding-bottom: 0.3rem;
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+      color: #4a2e1a;
+      text-shadow: 1px 1px 0 #c9ad7a;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      text-align: center;
+      border-bottom: 4px double #8b5a2b;
+      margin-top: 1rem;
+    }
+
+    /* 手绘装饰 */
+    .embellishment {
+      text-align: center;
+      font-size: 2rem;
+      color: #7a5a3a;
+      margin: 0.5rem 0;
+      opacity: 0.7;
+    }
+
+    /* 馆藏分类网格 */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0;
+    }
+
+    .category {
+      background: rgba(110, 70, 40, 0.08);
+      border: 1px solid #b28b5c;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      box-shadow: inset 0 0 20px #cfa77633;
+    }
+
+    .category h3 {
+      border-bottom: 1px dashed #a5713e;
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+    }
+
+    .category p {
+      font-size: 0.95rem;
+      color: #3e2a19;
+    }
+
+    /* 书籍卡片 */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .book-card {
+      background: #e6d7bb;
+      border: 1px solid #9f825a;
+      padding: 1.2rem;
+      box-shadow: 5px 5px 12px rgba(0,0,0,0.2);
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .book-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 18px rgba(0,0,0,0.3);
+      background: #eee1c9;
+    }
+
+    .book-card:active {
+      transform: translate(0,0);
+    }
+
+    .book-title {
+      font-size: 1.5rem;
+      font-family: 'Georgia', serif;
+      font-weight: bold;
+      color: #4a2a14;
+      border-left: 6px solid #a0522d;
+      padding-left: 0.7rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .book-author {
+      font-style: italic;
+      color: #704214;
+      margin-bottom: 0.8rem;
+    }
+
+    .book-desc {
+      font-size: 0.9rem;
+      color: #2e1f12;
+    }
+
+    .book-stamp {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 0.7rem;
+      color: #a55233;
+      opacity: 0.5;
+      transform: rotate(-10deg);
+      border: 1px solid #a55233;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+    }
+
+    /* 借阅规则列表 */
+    .rules {
+      background: #dac29e;
+      border: 3px solid #836f51;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: inset 0 0 20px #b49163;
+      list-style: none;
+    }
+
+    .rules li {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+      font-size: 1.1rem;
+    }
+
+    .rules li::before {
+      content: '✠';
+      color: #8b4513;
+      font-size: 1.3rem;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+
+    /* 脚注 */
+    .colophon {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px dashed #a78e6f;
+      padding-top: 1.5rem;
+      color: #5c4a33;
+    }
+
+    /* 彩蛋提示区域（不可见） */
+    #secret-trigger {
+      opacity: 0;
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      width: 30px;
+      height: 30px;
+      background: transparent;
+      cursor: default;
+      pointer-events: none; /* 防止干扰点击，我们用书籍卡片触发彩蛋 */
+    }
+
+    /* 适应小屏幕 */
+    @media (max-width: 600px) {
+      .parchment {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="parchment">
+    <!-- 标题区 -->
+    <div class="embellishment">⚜️ ⚜️ ⚜️</div>
+    <h1>旧世界图书馆</h1>
+    <div class="embellishment">❧ ❧ ❧</div>
+    <p style="text-align: center; font-size: 1.2rem; max-width: 700px; margin: 0 auto;">
+      大重启之前，这里是知识的圣殿。如今它沉睡在废墟界深处，等待着探寻者的脚步。
+    </p>
+
+    <!-- 馆藏分类 -->
+    <h2>📚 馆藏分类</h2>
+    <div class="grid-4">
+      <div class="category">
+        <h3>哲学 · 宗教</h3>
+        <p>柏拉图、笛卡尔、尼采……以及无人能解的经卷。</p>
+      </div>
+      <div class="category">
+        <h3>科学 · 技术</h3>
+        <p>从牛顿手稿到量子计算机的设计蓝图。</p>
+      </div>
+      <div class="category">
+        <h3>文学 · 诗歌</h3>
+        <p>莎士比亚、但丁、博尔赫斯——博尔赫斯的《巴别图书馆》似乎预言了一切。</p>
+      </div>
+      <div class="category">
+        <h3>历史 · 秘录</h3>
+        <p>未被篡改的编年史，以及被抹去的文明记忆。</p>
+      </div>
+    </div>
+
+    <!-- 著名馆藏（可点击触发彩蛋） -->
+    <h2>📖 著名馆藏</h2>
+    <div class="book-grid">
+      <div class="book-card" id="book1">
+        <div class="book-title">《亚里士多德全集》</div>
+        <div class="book-author">亚里士多德</div>
+        <div class="book-desc">羊皮卷装订，希腊文原版，第4卷页边有不明符号批注。</div>
+        <div class="book-stamp">A-17</div>
+      </div>
+      <div class="book-card" id="book2">
+        <div class="book-title">《1984》</div>
+        <div class="book-author">乔治·奥威尔</div>
+        <div class="book-desc">首版，扉页有手写注释：“这不是预言，是历史。”</div>
+        <div class="book-stamp">D-09</div>
+      </div>
+      <div class="book-card" id="book3">
+        <div class="book-title">《寂静的春天》</div>
+        <div class="book-author">蕾切尔·卡森</div>
+        <div class="book-desc">书中夹着一片干枯的树叶，叶脉组成一个坐标。</div>
+        <div class="book-stamp">S-22</div>
+      </div>
+      <div class="book-card" id="book4">
+        <div class="book-title">《巴别图书馆》</div>
+        <div class="book-author">博尔赫斯</div>
+        <div class="book-desc">书页间有微弱的数据流闪烁，据称能预见未来。</div>
+        <div class="book-stamp">L-13</div>
+      </div>
+    </div>
+
+    <!-- 借阅规则（诡异风格） -->
+    <h2>⚖️ 借阅规则（旧版）</h2>
+    <ul class="rules">
+      <li>借阅者须以记忆为押金，归还时若遗忘书中内容，押金不退。</li>
+      <li>禁止同时借阅两本以上哲学著作，以免引发逻辑悖论。</li>
+      <li>历史类书籍不得外借，只能在“静默厅”阅读，且需戴上特制手套。</li>
+      <li>若发现书籍长出眼睛或开口说话，请立即放回原架并通知管理员。</li>
+      <li>闭馆后，图书馆会自行整理书架，请勿打扰。</li>
+    </ul>
+
+    <!-- 藏书票信息 -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 2rem 0;">
+      <div style="border: 2px solid #6b4f3a; padding: 1rem; width: 60%; background: #e2cfb0;">
+        <p style="font-size: 0.9rem;"><strong>当前阅览室</strong> ：北翼 · 残本区</p>
+        <p style="font-size: 0.9rem;"><strong>开放时间</strong> ：奇点界时间 09:00 - 17:00（但此处无昼夜）</p>
+        <p style="font-size: 0.9rem;"><strong>管理员</strong> ：无人，或者说，每一本书都是管理员。</p>
+      </div>
+      <div style="border: 1px solid #a5713e; padding: 0.8rem; background: #cbb086; transform: rotate(3deg);">
+        <p style="font-family: monospace; font-size: 0.8rem;">Ex Libris<br>OLD WORLD</p>
+      </div>
+    </div>
+
+    <!-- 回到主站链接（可选） -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="index.html" style="color: #5a3a22; text-decoration: none; border: 1px solid #8b6f55; padding: 0.5rem 1.5rem; background: #dac29e;">← 返回真理殿堂</a>
+    </div>
+
+    <div class="colophon">
+      ＊ 本书目根据真理殿堂文献席第2470次挖掘整理 ＊
+    </div>
+  </div>
+
+  <!-- 彩蛋区域：连续点击某本书籍3次触发秘密 -->
+  <script>
+    (function() {
+      // 彩蛋计数器
+      let clickCount = 0;
+      let lastBook = null;
+
+      // 为所有书籍卡片添加点击事件
+      const books = document.querySelectorAll('.book-card');
+      books.forEach(book => {
+        book.addEventListener('click', function(e) {
+          // 如果点击的是同一本书，计数器累加；否则重置
+          if (lastBook === this) {
+            clickCount++;
+          } else {
+            lastBook = this;
+            clickCount = 1;
+          }
+
+          // 点击3次触发彩蛋
+          if (clickCount >= 3) {
+            // 获取书名
+            const title = this.querySelector('.book-title').innerText;
+            alert(`你在“${title}”的书脊上摸到了凹凸的文字：\n\n“第九层书架，从左边数第七本，那里藏着你想要的真相。”\n\n—— 图书馆的秘密入口已经打开。`);
+            // 重置计数器
+            clickCount = 0;
+            lastBook = null;
+          }
+        });
+      });
+
+      // 额外彩蛋：页脚文字点击5次
+      const colophon = document.querySelector('.colophon');
+      let colophonCount = 0;
+      colophon.addEventListener('click', function() {
+        colophonCount++;
+        if (colophonCount >= 5) {
+          alert('旧世界的最后一行字：\n\n“所有图书馆都是同一个图书馆，所有书都是同一本书。”');
+          colophonCount = 0;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
