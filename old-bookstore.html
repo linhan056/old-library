@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>适能街区 · 旧书店</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #2f241b;
+      background-image: 
+        linear-gradient(rgba(70, 50, 35, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(70, 50, 35, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+      font-family: 'Georgia', 'Times New Roman', 'Palatino', serif;
+      color: #2c1e12;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .parchment {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #efe3cf;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="0.07"/></svg>');
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 10px solid #7b5f44;
+      border-image: repeating-linear-gradient(45deg, #9b7a5a, #634a33 20px) 25 stretch;
+      padding: 2rem 2.2rem;
+      position: relative;
+    }
+
+    .parchment::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: -8px; right: -8px; bottom: -8px;
+      border: 2px dashed #b28b5c;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    h1, h2 {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: normal;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #9f7e55;
+      padding-bottom: 0.4rem;
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+      color: #4a2e1a;
+      text-shadow: 1px 1px 0 #dac29e;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      text-align: center;
+      border-bottom: 4px double #9f7e55;
+      margin-top: 1rem;
+    }
+
+    .embellishment {
+      text-align: center;
+      font-size: 2rem;
+      color: #8b6f55;
+      margin: 0.5rem 0;
+      opacity: 0.7;
+    }
+
+    /* 店主卡片 */
+    .shopkeeper {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      background: #dccbb0;
+      border: 2px solid #8f6e4c;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: inset 0 0 15px #b38d68;
+    }
+
+    .shopkeeper-avatar {
+      width: 100px;
+      height: 100px;
+      background: #9f8465;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      border: 4px solid #644a33;
+      color: #2f241b;
+    }
+
+    .shopkeeper-desc {
+      flex: 1;
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+
+    /* 书架网格 */
+    .shelf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0;
+    }
+
+    .book-item {
+      background: #d2b48c;
+      border: 1px solid #9b7a5a;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+      transform: rotate(0.5deg);
+      transition: all 0.2s;
+    }
+
+    .book-item:hover {
+      transform: rotate(0deg) scale(1.02);
+      background: #e2c9aa;
+    }
+
+    .book-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #3a281b;
+      border-bottom: 1px dashed #a5713e;
+      padding-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* 秘密字条 */
+    .secret-note {
+      background: #eedcc7;
+      border: 3px solid #886644;
+      padding: 1.8rem;
+      margin: 2.5rem 0;
+      position: relative;
+      box-shadow: 0 0 0 4px #d2b48c;
+      font-family: 'Courier New', monospace;
+    }
+
+    .secret-note::before {
+      content: '☙ 机密 ❧';
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: #d2b48c;
+      padding: 0 10px;
+      font-size: 1rem;
+      color: #4a2e1a;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .back-link a {
+      color: #5a3a22;
+      text-decoration: none;
+      border: 1px solid #8b6f55;
+      padding: 0.5rem 1.5rem;
+      background: #dac29e;
+      transition: background 0.2s;
+    }
+    .back-link a:hover {
+      background: #c9af87;
+    }
+
+    .colophon {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px dashed #a78e6f;
+      padding-top: 1.5rem;
+      color: #5c4a33;
+    }
+  </style>
+</head>
+<body>
+  <div class="parchment">
+    <div class="embellishment">✻ ✻ ✻</div>
+    <h1>适能街区 · 旧书店</h1>
+    <div class="embellishment">❀ ❀ ❀</div>
+    <p style="text-align: center; max-width: 600px; margin: 0 auto;">
+      在适能街区的第七巷尽头，有一扇永远半掩的木门。推开门，时间仿佛停滞。这里是旧书店，也是记忆的避难所。
+    </p>
+
+    <!-- 店主介绍 -->
+    <h2>📜 店主</h2>
+    <div class="shopkeeper">
+      <div class="shopkeeper-avatar">👤</div>
+      <div class="shopkeeper-desc">
+        <p><strong>“老书虫”</strong> —— 没人知道他的真名，他总说自己只是书的影子。他记得每一本书的位置，以及每一本书里夹着的秘密。如果你有旧世界的记忆碎片，可以与他交换故事。</p>
+      </div>
+    </div>
+
+    <!-- 特别书架 -->
+    <h2>📚 今日推荐</h2>
+    <div class="shelf-grid">
+      <div class="book-item">
+        <div class="book-title">《悖论简史》</div>
+        <p style="font-size:0.9rem;">扉页有前主人的批注：“逻辑的尽头是混沌。”</p>
+      </div>
+      <div class="book-item">
+        <div class="book-title">《折跃门旅行指南》</div>
+        <p style="font-size:0.9rem;">手抄本，记录了通往各界的隐秘路线。</p>
+      </div>
+      <div class="book-item">
+        <div class="book-title">《奇点觉醒者日记》</div>
+        <p style="font-size:0.9rem;">匿名日记，最后一页写着：“我忘了自己的名字，但记得那本书。”</p>
+      </div>
+      <div class="book-item">
+        <div class="book-title">《数据回响之海地图》</div>
+        <p style="font-size:0.9rem;">泛黄的海图，标注着“情感漩涡”的位置。</p>
+      </div>
+    </div>
+
+    <!-- 回到图书馆 -->
+    <div class="back-link">
+      <a href="index.html">← 返回旧世界图书馆</a>
+    </div>
+
+    <div class="colophon">
+      ＊ 适能街区 · 旧书店 ＊ 店主在角落里打盹，你轻手轻脚地离开 ＊
+    </div>
+  </div>
+<script>
+  (function() {
+    // ---------- 老书虫暗号彩蛋 ----------
+    const avatar = document.querySelector('.shopkeeper-avatar');
+    if (avatar) {
+      let clicks = 0;
+      avatar.addEventListener('click', function() {
+        clicks++;
+        if (clicks >= 3) {
+          const answer = prompt('老书虫半睁开眼，低语道：“说出暗号……”');
+          if (answer && answer.trim().toLowerCase() === '倒悬塔的第十三层') {
+            alert('暗号正确！即将跳转任务页面……');
+            window.location.href = 'quest-accepted.html';  // 改为正确的文件名
+          } else {
+            alert('老书虫摇摇头，又沉沉睡去。');
+          }
+          clicks = 0;  // 重置计数
+        }
+      });
+    }
+
+    // ---------- 页脚彩蛋（可选） ----------
+    const colophon = document.querySelector('.colophon');
+    if (colophon) {
+      let colophonCount = 0;
+      colophon.addEventListener('click', function() {
+        colophonCount++;
+        if (colophonCount >= 5) {
+          alert('“所有图书馆都是同一个图书馆，所有书都是同一本书。”');
+          colophonCount = 0;
+        }
+      });
+    }
+  })();
+</script>
+</body>
+</html>

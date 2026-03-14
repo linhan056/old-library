@@ -281,7 +281,7 @@
         <div class="book-desc">书中夹着一片干枯的树叶，叶脉组成一个坐标。</div>
         <div class="book-stamp">S-22</div>
       </div>
-      <div class="book-card" id="book4">
+      <div class="book-card" id="book-babel">
         <div class="book-title">《巴别图书馆》</div>
         <div class="book-author">博尔赫斯</div>
         <div class="book-desc">书页间有微弱的数据流闪烁，据称能预见未来。</div>
@@ -317,7 +317,7 @@
     </div>
 
     <div class="colophon">
-      ＊ 本书目根据真理殿堂文献席第2470次挖掘整理 ＊
+      ＊ 本书目由真理殿堂“旧日会”第2470次挖掘整理 ＊
     </div>
   </div>
 
@@ -339,6 +339,23 @@
             lastBook = this;
             clickCount = 1;
           }
+          
+          // 获取所有书籍卡片
+const books = document.querySelectorAll('.book-card');
+
+// ---------- 处理《巴别图书馆》的特殊跳转 ----------
+const babelBook = document.getElementById('book-babel');
+if (babelBook) {
+  let babelClickCount = 0;  // 专门记录巴别图书馆的点击次数
+  babelBook.addEventListener('click', function(e) {
+    babelClickCount++;
+    if (babelClickCount >= 3) {
+      // 跳转到新页面
+      window.location.href = 'old-bookstore.html';
+      // 注意：跳转后页面会离开，不需要重置计数器
+    }
+  });
+}
 
           // 点击3次触发彩蛋
           if (clickCount >= 3) {
@@ -364,5 +381,15 @@
       });
     })();
   </script>
+ const babelBook = document.getElementById('book-babel');
+if (babelBook) {
+  let babelClick = 0;
+  babelBook.addEventListener('click', function() {
+    babelClick++;
+    if (babelClick >= 3) {
+      window.location.href = 'old-bookstore.html'; // 跳转到新页面
+    }
+  });
+}
 </body>
 </html>

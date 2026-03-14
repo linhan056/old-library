@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>隐藏任务接取 · 倒悬之日的图书馆</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #2f241b;
+      background-image: 
+        linear-gradient(rgba(70, 50, 35, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(70, 50, 35, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+      font-family: 'Georgia', 'Times New Roman', 'Palatino', serif;
+      color: #2c1e12;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .parchment {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: #efe3cf;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="0.07"/></svg>');
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 10px solid #7b5f44;
+      border-image: repeating-linear-gradient(45deg, #9b7a5a, #634a33 20px) 25 stretch;
+      padding: 2.5rem 2rem;
+      position: relative;
+      text-align: center;
+    }
+
+    .parchment::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: -8px; right: -8px; bottom: -8px;
+      border: 2px dashed #b28b5c;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    h1 {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: normal;
+      font-size: 2.5rem;
+      letter-spacing: 0.05em;
+      border-bottom: 4px double #9f7e55;
+      padding-bottom: 0.5rem;
+      margin-bottom: 2rem;
+      color: #4a2e1a;
+      text-shadow: 1px 1px 0 #dac29e;
+    }
+
+    .seal {
+      font-size: 3rem;
+      margin: 1rem 0;
+      color: #8b4513;
+    }
+
+    .quest-desc {
+      background: #dccbb0;
+      border: 2px solid #8f6e4c;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: inset 0 0 15px #b38d68;
+      font-size: 1.2rem;
+      text-align: left;
+      position: relative;
+    }
+
+    .quest-desc::before {
+      content: '✦ 任务详情 ✦';
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: #d2b48c;
+      padding: 0 10px;
+      font-size: 1rem;
+      color: #4a2e1a;
+    }
+
+    .signature {
+      font-style: italic;
+      margin-top: 2rem;
+      color: #5a3a22;
+    }
+
+    .back-links {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .back-links a {
+      color: #5a3a22;
+      text-decoration: none;
+      border: 1px solid #8b6f55;
+      padding: 0.5rem 1.5rem;
+      background: #dac29e;
+      transition: background 0.2s;
+    }
+    .back-links a:hover {
+      background: #c9af87;
+    }
+
+    .colophon {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      border-top: 1px dashed #a78e6f;
+      padding-top: 1.5rem;
+      color: #5c4a33;
+    }
+  </style>
+</head>
+<body>
+  <div class="parchment">
+    <div class="seal">⚜️ 📜 ⚜️</div>
+    <h1>任务接取成功</h1>
+    <p style="font-size:1.2rem;">老书虫微微点头，从书架暗格中取出一卷泛黄的羊皮纸。</p>
+
+    <div class="quest-desc">
+      <p><strong>探寻者，你的任务如下：</strong></p>
+      <ul style="margin-left:1.5rem; margin-top:1rem;">
+        <li>前往 <strong>倒悬塔第13层</strong>，找到“哭泣的观众”残像。</li>
+        <li>在残像前静立三分钟，收集溢出的情感碎片（至少三片）。</li>
+        <li>将碎片带回旧书店，老书虫会为你解读其中的记忆。</li>
+      </ul>
+      <p style="margin-top:1rem;"><em>“真相藏在眼泪里。” —— 老书虫的叮嘱</em></p>
+    </div>
+
+    <p class="signature">—— 适能街区 · 旧书店 印记</p>
+
+    <div class="back-links">
+      <a href="old-bookstore.html">← 返回旧书店</a>
+      <a href="index.html">返回旧世界图书馆</a>
+    </div>
+
+    <div class="colophon">
+      ＊ 此任务由真理殿堂文献席认证 ＊
+    </div>
+  </div>
+
+  <!-- 小彩蛋：点击羊皮纸卷轴触发隐藏提示 -->
+  <script>
+    (function() {
+      const seal = document.querySelector('.seal');
+      if (seal) {
+        let clickCount = 0;
+        seal.addEventListener('click', function() {
+          clickCount++;
+          if (clickCount >= 3) {
+            alert('“记住，情感碎片需用木盒盛放，不可触碰。”');
+            clickCount = 0;
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
